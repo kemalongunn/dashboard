@@ -4,7 +4,9 @@ import {
   UserGroupIcon,
   HomeIcon,
   DocumentDuplicateIcon,
+  ArchiveBoxIcon
 } from '@heroicons/react/24/outline';
+
 import clsx from 'clsx';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -19,6 +21,7 @@ const links = [
     icon: DocumentDuplicateIcon,
   },
   { name: 'Customers', href: '/dashboard/customers', icon: UserGroupIcon },
+  {name: 'Orders', href:'/dashboard/orders',icon:ArchiveBoxIcon}
 ];
 
 export default function NavLinks() {
