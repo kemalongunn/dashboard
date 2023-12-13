@@ -1,59 +1,32 @@
-import Image from 'next/image';
-import { UpdateInvoice, DeleteInvoice } from '@/app/ui/invoices/buttons';
-import InvoiceStatus from '@/app/ui/invoices/status';
-import { formatDateToLocal, formatCurrency } from '@/app/lib/utils';
-import { fetchFilteredInvoices } from '@/app/lib/data';
+'use client';
+
 import {
  PlusSmallIcon,
  MinusSmallIcon
 } from '@heroicons/react/24/outline';
+import Link from 'next/link';
+import { useState } from 'react';
 import { Button } from '../button';
-export default async function OrderTable() {
-  const products = [
-    {
-      productStockCode: 'ARG.AJ.1029',
-      productStockName: '100 CC KAPAK',
-      productStockGroupCode: '50',
-      productStockGroupName: 'AMBALAJ URUNLER',
-    },
-    {
-      productStockCode: 'ARG.AJ.1053',
-      productStockName: "10'LU STRAFOR KOLİSİ",
-      productStockGroupCode: '50',
-      productStockGroupName: 'AMBALAJ URUNLER',
-    },
-    {
-      productStockCode: 'ARG.AJ.1026',
-      productStockName: '2 KATLI KÜLAH TUTUCU',
-      productStockGroupCode: '50',
-      productStockGroupName: 'AMBALAJ URUNLER',
-    },
-    {
-      productStockCode: 'ARG.AJ.1030',
-      productStockName: '200 CC KAPAK',
-      productStockGroupCode: '50',
-      productStockGroupName: 'AMBALAJ URUNLER',
-    },
-    {
-      productStockCode: 'ARG.AJ.1054',
-      productStockName: "25'LI STRAFOR KOLİSİ",
-      productStockGroupCode: '50',
-      productStockGroupName: 'AMBALAJ URUNLER',
-    },
-    {
-      productStockCode: 'ARG.AJ.1023',
-      productStockName: '3 LÜ KÜLAH TUTUCU',
-      productStockGroupCode: '50',
-      productStockGroupName: 'AMBALAJ URUNLER',
-    },
-  ];
 
+export  function OrderTable({products}:any) {
+  const [quantity,setQuantity] = useState(0);
+ 
+  const handleChangeQuantity = (e:any) => {
+    setQuantity(e.target.value);
+  }
+  const handleIncrease = () => {
+    setQuantity((prevQuantity) => prevQuantity + 1)
+  }
+  const handleDecrease = () => {
+    setQuantity((prevQuantity) => prevQuantity - 1)
+  }
+  console.log(products)
   return (
     <div className="mt-6 flow-root">
       <div className="inline-block min-w-full align-middle">
         <div className="rounded-lg bg-gray-50 p-2 md:pt-0">
           <div className="md:hidden">
-            {products?.map((product) => (
+            {products?.map((product:any) => (
               <div
                 key={product.productStockCode}
                 className="mb-2 w-full rounded-md bg-white p-4"
@@ -80,7 +53,7 @@ export default async function OrderTable() {
               </tr>
             </thead>
             <tbody className="bg-white">
-              {products?.map((product) => (
+              {products?.map((product:any) => (
                 <tr
                   key={product.productStockCode}
                   className="w-full border-b py-3 text-sm last-of-type:border-none [&:first-child>td:first-child]:rounded-tl-lg [&:first-child>td:last-child]:rounded-tr-lg [&:last-child>td:first-child]:rounded-bl-lg [&:last-child>td:last-child]:rounded-br-lg"
@@ -91,20 +64,23 @@ export default async function OrderTable() {
                   <td className="whitespace-nowrap px-3 py-3 item flex justify-center">
                     <div className="relative flex max-w-[8rem] items-center">
                       <button
+                      onClick={handleIncrease}
                         className="h-11 rounded-s-lg border border-gray-300 bg-gray-100 p-3 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700"
                       >
                         <PlusSmallIcon className='w-5'/>
                       </button>
                       <input
-                        type="text"
+                        type="number"
                         id="quantity-input"
                         data-input-counter
-                        aria-describedby="helper-text-explanation"
                         className="block h-11 w-20 border-x-0 border-gray-300 bg-gray-50 py-2.5 text-center text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
-                        placeholder="999"
+                        placeholder={quantity.toString()}
                         required
+                        disabled
+                        onChange={handleChangeQuantity}
                       />
                       <button
+                        onClick={handleDecrease}
                         className="h-11 rounded-e-lg border border-gray-300 bg-gray-100 p-3 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700"
                       >
                         <MinusSmallIcon className='w-5'/>
@@ -117,6 +93,15 @@ export default async function OrderTable() {
             </tbody>
           </table>
         </div>
+        <div className="mt-6 flex justify-end gap-4">
+        <Link
+          href="/dashboard/orders"
+          className="flex h-10 items-center rounded-lg bg-gray-100 px-4 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-200"
+        >
+          Cancel
+        </Link>
+        <Button  type="submit">Create Order</Button>
+      </div>
       </div>
     </div>
   );

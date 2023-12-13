@@ -1,11 +1,19 @@
 import { Button } from '@/app/ui/button';
 import { lusitana } from '@/app/ui/font';
 import { CreateOrder } from '@/app/ui/orders/buttons';
-import OrderTable from '@/app/ui/orders/table';
+import { OrderTable } from '@/app/ui/orders/table';
 import Search from '@/app/ui/search';
 import Link from 'next/link';
 
-function page() {
+async function  page() {
+  const products = await fetch("http://localhost:8090/api/products", {
+    method:"GET",
+    headers: {
+      "Content-Type": "application/json",
+      'Authorization': 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImF1dGgiOiJST0xFX0FETUlOLFJPTEVfVVNFUiIsImV4cCI6MTcwNTA2NzIzOX0.XoW4IXorM_9eHZzMfo-8o5PFRMo0Z8PPezg-fXVlH5H2ZUh7lFiN9Fczs8AxYcsCnztXqcOa3frPuUDIhUtySw' 
+    },
+  });
+  const productsList = await products.json()
   return (
     <div className='w-full'>
       <div className="flex w-full items-center justify-between">
@@ -16,17 +24,9 @@ function page() {
         <CreateOrder/>
       </div>
       <div>
-        <OrderTable/>
+        <OrderTable products = {productsList} />
       </div>
-      <div className="mt-6 flex justify-end gap-4">
-        <Link
-          href="/dashboard/orders"
-          className="flex h-10 items-center rounded-lg bg-gray-100 px-4 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-200"
-        >
-          Cancel
-        </Link>
-        <Button type="submit">Create Order</Button>
-      </div>
+     
     </div>
   )
 }
