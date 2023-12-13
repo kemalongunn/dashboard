@@ -20,6 +20,11 @@ export  function OrderTable({products}:any) {
   const handleDecrease = () => {
     setQuantity((prevQuantity) => prevQuantity - 1)
   }
+
+  const  createOrder = async () => {
+    
+  }
+
   console.log(products)
   return (
     <div className="mt-6 flow-root">
@@ -100,7 +105,7 @@ export  function OrderTable({products}:any) {
         >
           Cancel
         </Link>
-        <Button  type="submit">Create Order</Button>
+        <Button onClick={createOrder}  type="submit">Create Order</Button>
       </div>
       </div>
     </div>
