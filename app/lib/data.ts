@@ -10,6 +10,7 @@ import {
   Revenue,
 } from './definitions';
 import { formatCurrency } from './utils';
+import { json } from 'stream/consumers';
 
 export async function fetchRevenue() {
   // Add noStore() here prevent the response from being cached.
@@ -238,3 +239,26 @@ export async function getUser(email: string) {
     throw new Error('Failed to fetch user.');
   }
 }
+
+export async function getOrders (page:number,size:number) {
+  noStore();
+  try {
+    const res = await fetch("http://localhost:8090/api/orders-by-filter", {
+      method:"POST",
+      headers: {
+        "Content-Type": "application/json",
+        'Authorization': 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImF1dGgiOiJST0xFX0FETUlOLFJPTEVfVVNFUiIsImV4cCI6MTcwNTA2NzIzOX0.XoW4IXorM_9eHZzMfo-8o5PFRMo0Z8PPezg-fXVlH5H2ZUh7lFiN9Fczs8AxYcsCnztXqcOa3frPuUDIhUtySw' 
+      },
+      cache: 'no-store',
+      body: JSON.stringify({
+        page: page -1 ,
+        size: size
+      }),
+    });
+    const orderList = await res.json();
+    return orderList;
+  } catch (error) {
+    console.log(error)
+  }
+}
+

@@ -1,11 +1,11 @@
 import { Button } from '@/app/ui/button';
 import { lusitana } from '@/app/ui/font';
+import { CreateOrderTable } from '@/app/ui/orders/CreatedOrderTable';
 import { CreateOrder } from '@/app/ui/orders/buttons';
-import { OrderTable } from '@/app/ui/orders/table';
 import Search from '@/app/ui/search';
 import Link from 'next/link';
 
-async function  page() {
+async function  Page() {
   const products = await fetch("http://localhost:8090/api/products", {
     method:"GET",
     headers: {
@@ -17,18 +17,18 @@ async function  page() {
   return (
     <div className='w-full'>
       <div className="flex w-full items-center justify-between">
-        <h1 className={`${lusitana.className} text-2xl`}>Create Order</h1>
+        <h1 className={`${lusitana.className} text-2xl`}>Siparis Olustur</h1>
       </div>
       <div className="mt-4 flex items-center justify-between gap-2 md:mt-8">
-        <Search placeholder="Search orders..." />
+        <Search placeholder="Siparis Ara..." />
         <CreateOrder/>
       </div>
       <div>
-        <OrderTable products = {productsList} />
+        <CreateOrderTable products = {productsList} />
       </div>
      
     </div>
   )
 }
 
-export default page
+export default Page
